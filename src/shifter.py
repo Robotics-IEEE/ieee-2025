@@ -16,7 +16,7 @@ class Shifter():
             self.rate.sleep()
 
     def shifter_control_subscribe():
-        rospy.init_node("driver_publish", anonymous=False)
+        rospy.init_node("driver_shifter_publish", anonymous=False)
         rospy.Subscriber("shifter_control", "callback?")
 
         rospy.spin()
