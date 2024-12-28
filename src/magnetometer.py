@@ -27,7 +27,7 @@ class Magnetometer():
 
     def magnet_publish(self):   
         # Publish to the magnet topic
-        mag_pub = rospy.Publish('magnet', Bool, queue_size=10)
+        mag_pub = rospy.Publisher('magnet', Bool, queue_size=10)
 
         while not rospy.is_shutdown():
             try:
