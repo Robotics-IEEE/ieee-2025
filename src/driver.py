@@ -15,24 +15,24 @@ class Driver:
             self.rate.sleep()
         
     def intake_control_publish():
-        intake_control_publish  = rospy.Publisher('intake_control', "bool" , queue_size=10)
+        intake_control_publish  = rospy.Publisher('intake_control', "bool", queue_size=10)
         rospy.init_node('driver', anonymous=False)
         while not rospy.is_shutdown():
-            goal_pos_publish.publish("Output here")
+            intake_control_publish.publish("Output here")
             self.rate.sleep()
 
     def outtake_control_publish():
-        goal_pos_publish  = rospy.Publisher('goal_position', "point", queue_size=10)
+        outtake_control_publish  = rospy.Publisher('outtake_control', "bool", queue_size=10)
         rospy.init_node('driver', anonymous=False)
         while not rospy.is_shutdown():
-            goal_pos_publish.publish("Output here")
+            outtake_control_publish.publish("Output here")
             self.rate.sleep()
 
     def shifter_publish():
-        goal_pos_publish  = rospy.Publisher('goal_position', "point", queue_size=10)
+        shifter_publish  = rospy.Publisher('shifter', "bool", queue_size=10)
         rospy.init_node('driver', anonymous=False)
         while not rospy.is_shutdown():
-            goal_pos_publish.publish("Output here")
+            shifter_publish.publish("Output here")
             self.rate.sleep()
 
     def goal_status_subscribe():
