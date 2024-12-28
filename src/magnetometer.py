@@ -18,14 +18,14 @@ class Magnetometer():
             i2c = busio.I2C(board.SCL, board.SDA)
             self.sensor = adafruit_lis2mdl.LIS2MDL(i2c)
             self.rate = rospy.Rate(10) # Hz
+                
+            # Initialize the ROS node
+            rospy.init_node('magnetometer', anonymous=False)
         except Exception as e:
             rospy.logerr(f"Failed to initialize sensor: {e}")
             raise
 
-    def magnet_publish(self):
-        # Initialize the ROS node
-        rospy.init_node('magnetometer', anonymous=False)   
-
+    def magnet_publish(self):   
         # Publish to the magnet topic
         mag_pub = rospy.Publish('magnet', Bool, queue_size=10)
 
