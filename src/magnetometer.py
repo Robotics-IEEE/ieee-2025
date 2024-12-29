@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ Display magnetometer data at 10Hz """
 
 import rospy
@@ -15,14 +16,14 @@ class Magnetometer():
     def __init__(self):
         # Initialize the i2c sensor
         try:
+            # Initialize the ROS node
+            rospy.init_node('magnetometer', anonymous=False)
             i2c = busio.I2C(board.SCL, board.SDA)
             self.sensor = adafruit_lis2mdl.LIS2MDL(i2c)
             self.rate = rospy.Rate(10) # Hz
-                
-            # Initialize the ROS node
-            rospy.init_node('magnetometer', anonymous=False)
+
         except Exception as e:
-            rospy.logerr(f"Failed to initialize sensor: {e}")
+            # rospy.logerr(f"Failed to initialize sensor: {e}")
             raise
 
     def magnet_publish(self):   
@@ -38,7 +39,8 @@ class Magnetometer():
                 # Publish true if found, false otherwise
                 mag_pub.publish(Bool(data=mag_found))
             except Exception as e:
-                rospy.logerr(f"Error reading sensor data: {e}")
+                # rospy.logerr(f"Error reading sensor data: {e}")
+                raise
 
             # Sleep for rate of 10Hz
             self.rate.sleep()
