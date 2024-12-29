@@ -45,11 +45,14 @@ class DynamixelHandler:
         self.packet_handler = PacketHandler(PROTOCOL_VERSION) 
         self.port_handler.openPort()
         self.port_handler.setBaudRate(self.baud)
+        print("Dynamixel port opened.")
         self.is_port_active = True
 
     def close_port(self):
-        self.packet_handler.write1ByteTxRx(self.port_handler, self.id, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
+        for id in self.connected:
+            self.packet_handler.write1ByteTxRx(self.port_handler, id, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE)
         self.port_handler.closePort()
+        print("Dynamixel port closed.")
         self.is_port_active = False
 
     def is_port_active(self):

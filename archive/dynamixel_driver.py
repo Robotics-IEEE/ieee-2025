@@ -1,23 +1,23 @@
-import archive.dynamixel_handler as dynamixel_handler
+from dynamixel_handler import DynamixelHandler
 import time
 
-dynamixel_handler.Dynamixel(6, 1000000)
-dynamixel_handler.Dynamixel(5, 1000000)
-idList = dynamixel_handler.instanceList
-idList[1].open_port(idList[1])
-idList[0].open_port(idList[0])
-idList[0].set_pos(200)
-time.sleep(1)
-print(idList[0].get_pos())
-idList[1].set_pos(800)
-time.sleep(1)
-print(idList[1].get_pos())
+handler = DynamixelHandler(1000000)
+DYN_1 = 8
+DYN_2 = 5
 
+handler.add_dynamixel(DYN_1)
+handler.add_dynamixel(DYN_2)
+
+handler.open_port()
+
+handler.set_pos(DYN_1, 200)
+time.sleep(1)
+handler.set_pos(DYN_1, 800)
 time.sleep(1)
 
-idList[0].set_pos(800)
+handler.set_pos(DYN_2, 200)
 time.sleep(1)
-print(idList[0].get_pos())
-idList[1].set_pos(200)
+handler.set_pos(DYN_2, 800)
 time.sleep(1)
-print(idList[1].get_pos())
+
+handler.close_port()
