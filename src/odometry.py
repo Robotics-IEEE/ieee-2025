@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import rospy
 
 class Odometry():
 
-    rate = rospy.Rate(10)
-    def __init__():
+    def __init__(self):
         rospy.init_node("odometry", anonymous=False)
+        rate = rospy.Rate(10)
 
     def odometry_publish(self):
         shifter_publish = rospy.Publisher("odometry_publish", "point", queue_size=10)

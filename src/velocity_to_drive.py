@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import rospy
 
 class VelocityToDrive():
 
-    rate = rospy.Rate(10)
-    def __init__():
+    def __init__(self):
         rospy.init_node("velocity_to_drive", anonymous=False)
+        self.rate = rospy.Rate(10)
 
     def goal_status_publish(self):
         shifter_publish = rospy.Publisher("goal_status_publish", "status_type", queue_size=10)

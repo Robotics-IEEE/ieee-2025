@@ -1,8 +1,8 @@
+#!/usr/bin/env python3
 import rospy
 
 class VelocityToOuttake():
 
-    rate = rospy.Rate(10)
     def __init__():
         rospy.init_node("velocity_to_outtake", anonymous=False)
 

@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 import rospy
 
 #TODO: change "point" to a real data type
 #TODO: make the publishers publish a legitimate output
 class Driver:
-    rate = rospy.Rate(10)
-    def __init__():
+    def __init__(self):
         rospy.init_node('driver', anonymous=False)
+        self.rate = rospy.Rate(10)
 
     def goal_position_publish(self):
         goal_pos_publish  = rospy.Publisher('goal_position_publish', "point", queue_size=10)
@@ -44,7 +45,7 @@ class Driver:
         rospy.spin()
 
     def vision_status_subscribe():
-        rospy.Subscriber("vision_status_publish", "callback?")
+        rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
 
 
