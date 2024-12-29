@@ -8,43 +8,43 @@ class Driver:
         rospy.init_node('driver', anonymous=False)
 
     def goal_position_publish(self):
-        goal_pos_publish  = rospy.Publisher('goal_position', "point", queue_size=10)
+        goal_pos_publish  = rospy.Publisher('goal_position_publish', "point", queue_size=10)
         while not rospy.is_shutdown():
             goal_pos_publish.publish("Output here")
             self.rate.sleep()
         
-    def intake_control_publish():
-        intake_control_publish  = rospy.Publisher('intake_control', "bool", queue_size=10)
+    def intake_control_publish(self):
+        intake_control_publish  = rospy.Publisher('intake_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
             intake_control_publish.publish("Output here")
             self.rate.sleep()
 
-    def outtake_control_publish():
-        outtake_control_publish  = rospy.Publisher('outtake_control', "bool", queue_size=10)
+    def outtake_control_publish(self):
+        outtake_control_publish  = rospy.Publisher('outtake_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
             outtake_control_publish.publish("Output here")
             self.rate.sleep()
 
-    def shifter_publish():
-        shifter_publish  = rospy.Publisher('shifter', "bool", queue_size=10)
+    def shifter_control_publish(self):
+        shifter_publish  = rospy.Publisher('shifter_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
             shifter_publish.publish("Output here")
             self.rate.sleep()
 
     def goal_status_subscribe():
-        rospy.Subscriber("goal_status", "callback?")
+        rospy.Subscriber("goal_status_publish", "callback?")
         rospy.spin()
     
     def magnet_subscribe():
-        rospy.Subscriber("magnet", "callback?")
+        rospy.Subscriber("magnet_publish", "callback?")
         rospy.spin()
 
     def shifter_status_subscribe():
-        rospy.Subscriber("shifter", "callback?")
+        rospy.Subscriber("shifter_status_publish", "callback?")
         rospy.spin()
 
     def vision_status_subscribe():
-        rospy.Subscriber("vision status", "callback?")
+        rospy.Subscriber("vision_status_publish", "callback?")
         rospy.spin()
 
 
