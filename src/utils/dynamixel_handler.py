@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ Manages the dynamixel motors used within the robot """
 from dynamixel_sdk import PortHandler, PacketHandler
 

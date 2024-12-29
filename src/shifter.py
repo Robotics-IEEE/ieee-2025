@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import rospy
 from custom_types.msg import Status
 
@@ -5,8 +6,8 @@ class Shifter():
     def __init__(self):
         # Initialize the node
         try:
-            self.rate = rospy.Rate(10) # Hz
             rospy.init_node("shifter", anonymous=False)
+            self.rate = rospy.Rate(10) # Hz
         except Exception as e:
             rospy.logerr(f"Failed to initialize shifter: {e}")
             raise
