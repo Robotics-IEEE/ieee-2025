@@ -28,17 +28,8 @@ class DynamixelHandler:
     def __init__(self, baud: int = 1000000):
         self.port_handler = None
         self.packet_handler = None
-        self.connected = []
         self.is_port_active = False
         self.baud = baud
-
-    def add_dynamixel(self, dynamixel_id: int):
-        """ Add a dynamixel to the list (used for clean port close)"""
-        self.connected.append(dynamixel_id)
-
-    def remove_dynamixel(self, dynamixel_id: int):
-        """ Remove a dynamixel to the list (used for clean port close)"""
-        self.connected.remove(dynamixel_id)
 
     def set_pos(self, dynamixel_id: int, pos: int):
         """ Sets the position of an individual dynamixel provided the ID and position """
@@ -72,9 +63,13 @@ class DynamixelHandler:
         self.is_port_active = True
 
     def close_port(self):
-        """ Closes the serial stream to all the dynamixels. """
-        for id in self.connected:
-            self.set_torque(id, False)
+        """ Closes the serial stream to all the dynamixels. Makes sure all dynamixels are set to disabled torque. """
+        for id in range(0, 30):
+            try:
+                self.set_torque(id, False)
+            except Exception as e:
+                pass
+        
         self.port_handler.closePort()
         print("Dynamixel port closed.")
         self.is_port_active = False
