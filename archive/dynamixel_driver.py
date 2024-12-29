@@ -1,9 +1,9 @@
-import archive.go_to_pos as go_to_pos
+import archive.dynamixel_handler as dynamixel_handler
 import time
 
-go_to_pos.Dynamixel(6, 1000000)
-go_to_pos.Dynamixel(5, 1000000)
-idList = go_to_pos.instanceList
+dynamixel_handler.Dynamixel(6, 1000000)
+dynamixel_handler.Dynamixel(5, 1000000)
+idList = dynamixel_handler.instanceList
 idList[1].open_port(idList[1])
 idList[0].open_port(idList[0])
 idList[0].set_pos(200)

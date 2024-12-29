@@ -1,8 +1,7 @@
 import rospy
+from custom_types.msg import Status
 
-# TODO: Create status_type
-
-class Shifter():    
+class Shifter():
     def __init__(self):
         # Initialize the node
         try:
@@ -13,7 +12,7 @@ class Shifter():
             raise
 
     def shifter_status_publish(self):
-        shifter_publish = rospy.Publisher("shifter_status", status_type, queue_size=10)
+        shifter_publish = rospy.Publisher("shifter_status", Status, queue_size=10)
 
         while not rospy.is_shutdown():
             try:
@@ -29,5 +28,5 @@ class Shifter():
     def shifter_control_subscribe(self):
         rospy.Subscriber("shifter_control", "callback?")
         # TODO: Fix dynamixel WRITE code here
-        # TODO: Make callback
+        # TODO: Make callback 
         rospy.spin()
