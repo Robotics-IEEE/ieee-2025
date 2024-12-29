@@ -1,4 +1,4 @@
-from dynamixel_handler import DynamixelHandler
+from utils.dynamixel_handler import DynamixelHandler
 import time
 
 handler = DynamixelHandler(1000000)
