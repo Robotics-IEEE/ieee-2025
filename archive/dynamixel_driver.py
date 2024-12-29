@@ -5,9 +5,6 @@ handler = DynamixelHandler(1000000)
 DYN_1 = 8
 DYN_2 = 5
 
-handler.add_dynamixel(DYN_1)
-handler.add_dynamixel(DYN_2)
-
 handler.open_port()
 
 handler.set_pos(DYN_1, 200)
