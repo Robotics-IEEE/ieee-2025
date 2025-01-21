@@ -19,3 +19,11 @@ class VelocityToDrive():
     def odometry_subscribe():
         rospy.Subscriber("odometry_publish", "callback?")
         rospy.spin()
+
+# Execute velocity to drive
+if __name__ == "__main__":
+    try:
+        velocity_to_drive = VelocityToDrive()
+        # Run the publishers and subscribers here
+    except rospy.ROSInterruptException:
+        pass
