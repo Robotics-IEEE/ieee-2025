@@ -10,3 +10,11 @@ class Vision():
         shifter_publish = rospy.Publisher("vision_vitals_publish", "status_type", queue_size=10)
         while not rospy.is_shutdown():
             self.rate.sleep()
+
+# Execute vision
+if __name__ == "__main__":
+    try:
+        vision = Vision()
+        vision.vision_vitals_publish()
+    except rospy.ROSInterruptException:
+        pass
