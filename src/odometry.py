@@ -24,3 +24,11 @@ class Odometry():
 
         while not rospy.is_shutdown():
             self.rate.sleep()
+
+# Execute odometry
+if __name__ == "__main__":
+    try:
+        odometry = Odometry()
+        odometry.odometry_publish()
+    except rospy.ROSInterruptException:
+        pass
