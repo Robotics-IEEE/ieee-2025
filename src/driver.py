@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import rospy
+from geometry_msgs.msg import Twist
 
-#TODO: change "point" to a real data type
+#TODO: change "point" to a real data type: UPDATE - use the twist message type.
 #TODO: make the publishers publish a legitimate output
+
 class Driver:
     def __init__(self):
         rospy.init_node('driver', anonymous=False)
@@ -48,9 +50,10 @@ class Driver:
         rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
 
-
-
-
-
-    
-    
+# Execute driver
+if __name__ == "__main__":
+    try:
+        driver = Driver()
+        # TODO: call the publish functions
+    except rospy.ROSInterruptException:
+        pass
