@@ -18,7 +18,7 @@ class Shifter():
         while not rospy.is_shutdown():
             try:
                 # TODO: Build status type
-                # TODO: Fix dynamixel READ code here
+                # TODO: Fix servo READ code here
                 print("hi")
             except Exception as e:
                 rospy.logerr(f"Error reading data: {e}")
@@ -28,6 +28,15 @@ class Shifter():
 
     def shifter_control_subscribe(self):
         rospy.Subscriber("shifter_control", "callback?")
-        # TODO: Fix dynamixel WRITE code here
+        # TODO: Fix servo WRITE code here
         # TODO: Make callback 
         rospy.spin()
+
+# Execute shifter
+if __name__ == "__main__":
+    try:
+        shifter = Shifter()
+        shifter.shifter_status_publish()
+        # Run subscriber, if needed, on other thread or as needed
+    except rospy.ROSInterruptException:
+        pass
