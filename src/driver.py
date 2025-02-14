@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 from geometry_msgs.msg import Twist
+from utils.constructs import *
 
 #TODO: change "point" to a real data type: UPDATE - use the twist message type.
 #TODO: make the publishers publish a legitimate output
@@ -49,6 +50,26 @@ class Driver:
     def vision_status_subscribe():
         rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
+
+current_pos = Vec2i(0, 0)
+
+magnet_tag = None
+tags = [False, False, False, False]
+tag_positions = []
+score = 0
+
+geodynium_in = 0
+nebulite_in = 0
+
+in_cave = False
+
+placed_beacon = False
+
+led_waiting = False  # Waiting for LED?
+
+# Policy:
+# - Wait for LED to fire
+# - First place beacon
 
 # Execute driver
 if __name__ == "__main__":
