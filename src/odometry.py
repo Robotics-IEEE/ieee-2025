@@ -2,6 +2,8 @@
 
 import rospy
 from geometry_msgs.msg import Twist
+from utils.encoder import Encoder
+import time
 
 # TODO: Write logic for reading from modules and publishing
 
@@ -13,6 +15,12 @@ class Odometry():
     """
     def __init__(self):
         try:
+            # TODO: update encoder pins
+            self.encoder_back = Encoder(17, 18, 27, 22)
+            self.encoder_side_left = Encoder(17, 18, 27, 22)
+            self.encoder_side_right = Encoder(17, 18, 27, 22)
+            self.position = 0
+
             rospy.init_node("odometry", anonymous=False)
             self.rate = rospy.Rate(10)
 
@@ -20,9 +28,24 @@ class Odometry():
             raise
 
     def odometry_publish(self):
-        shifter_publish = rospy.Publisher("odometry_publish", Twist, queue_size=10)
+        odometry_publish = rospy.Publisher("odometry_publish", Twist, queue_size=10)
+
+        # TODO: compute position
+        position = Twist()
 
         while not rospy.is_shutdown():
+            try:
+
+                # Read encoder data
+                self.encoder_back.update_encoder()
+                self.encoder_side_left.update_encoder()
+                self.encoder_side_right.update_encoder()
+
+                # Compute position and publish
+                odometry_publish.publish(position)
+            except Exception as e:
+                raise
+            
             self.rate.sleep()
 
 # Execute odometry
