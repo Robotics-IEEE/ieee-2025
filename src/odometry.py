@@ -5,8 +5,6 @@ from geometry_msgs.msg import Twist
 from utils.encoder import Encoder
 import time
 
-# TODO: Write logic for reading from modules and publishing
-
 class Odometry():
     """
     Odometry class manages the odometry data received from the robot using the odometry modules,
