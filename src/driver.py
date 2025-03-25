@@ -16,7 +16,7 @@ class Driver:
         while not rospy.is_shutdown():
             goal_pos_publish.publish("Output here")
             self.rate.sleep()
-        
+
     def intake_control_publish(self):
         intake_control_publish  = rospy.Publisher('intake_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
@@ -38,7 +38,7 @@ class Driver:
     def goal_status_subscribe():
         rospy.Subscriber("goal_status_publish", "callback?")
         rospy.spin()
-    
+
     def magnet_subscribe():
         rospy.Subscriber("magnet_publish", "callback?")
         rospy.spin()
@@ -51,7 +51,8 @@ class Driver:
         rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
 
-current_pos = Vec2i(0, 0)
+current_pos = Vec2f(0, 0)
+angle = 0
 
 magnet_tag = None
 tags = [False, False, False, False]
@@ -78,3 +79,11 @@ if __name__ == "__main__":
         # TODO: call the publish functions
     except rospy.ROSInterruptException:
         pass
+
+ANGULAR_DISTANCE = 1
+
+def tick_odo(angle: float) -> Vec2f:
+    nx = math.cos(angle) * ANGULAR_DISTANCE
+    nz = math.sin(angle) * ANGULAR_DISTANCE
+
+    return Vec2f(nx, nz)

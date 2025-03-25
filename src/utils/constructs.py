@@ -37,6 +37,9 @@ class Vec2i:
     def __str__(self) -> str:
         return self._kind() + "[" + str(self.x) + ", " + str(self.z) + "]"
 
+    def __sub__(self, other) -> 'Vec2i':
+        return Vec2i(self.x - other.x, self.z - other.z)
+
 
 # Mutable Vec2i
 class MVec2i(Vec2i):
@@ -94,6 +97,17 @@ class Vec2Node:
 
     def __str__(self) -> str:
         return "%" + self.loc.__str__()
+
+class Vec2f:
+    def __init__(self, x: float, z: float):
+        self.x = x
+        self.z = z
+
+    def x(self) -> float:
+        return self.x
+
+    def z(self) -> float:
+        return self.z
 
 class ContainingPrioQueue(PriorityQueue):
     def _init(self, maxsize):

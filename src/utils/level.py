@@ -1,7 +1,22 @@
 import numpy as np
 from queue import PriorityQueue
-import constructs
-import pathfind
+from constructs import *
+#import pathfind
+
+SQUARE = set()
+SQUARE.add(Vec2i(0, 1))
+SQUARE.add(Vec2i(1, 0))
+SQUARE.add(Vec2i(0, -1))
+SQUARE.add(Vec2i(-1, 0))
+SQUARE.add(Vec2i(-1, -1))
+SQUARE.add(Vec2i(-1, 1))
+SQUARE.add(Vec2i(1, -1))
+SQUARE.add(Vec2i(1, 1))
+
+class PathRes:
+    def __init__(self, nd, list):
+        self.nd = nd
+        self.list = list
 
 class SimulatedLevel:
     """ Constructor """
@@ -49,14 +64,17 @@ class SimulatedLevel:
         return None
 
     def pathfind(self, start: Vec2i, target: Vec2i):
-        res_node = self.__pathfind(start, target);
+        res_node = self.__pathfind(start, target)
         nd = res_node
 
-        if (res_node is not None):
+        if (nd is not None):
             self.allNodes = set()
             while not nd is None:
                 self.allNodes.add(nd.loc)
                 nd = nd.parent
+
+    def pathfind2(self, start: Vec2i, target: Vec2i):
+        return self.__pathfind(start, target)
 
     def clear_field(self):
         np.fill(self.field, 0)
