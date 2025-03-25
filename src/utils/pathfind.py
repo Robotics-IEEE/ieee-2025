@@ -11,6 +11,28 @@ NORTHWEST = Vec2i(0, 1)
 SOUTHEAST = Vec2i(-1, 0)
 SOUTHWEST = Vec2i(0, -1)
 
+def invert_dir(dir: Vec2i):
+    if dir.manhattan_from_origin() is not 1:
+        raise Exception("Called with impossible parameter " + dir.__str__())
+    if dir is NORTH:
+        return SOUTH
+    if dir is EAST:
+        return WEST
+    if dir is SOUTH:
+        return NORTH
+    if dir is WEST:
+        return EAST
+
+    if dir is NORTHEAST:
+        return SOUTHWEST
+    if dir is NORTHWEST:
+        return SOUTHEAST
+    if dir is SOUTHEAST:
+        return NORTHWEST
+    if dir is SOUTHWEST:
+        return NORTHEAST
+    raise Exception("Reality is broken?")
+
 class DirAmtPair:
     def __init__(self, dir: Vec2i, amt: int):
         self.dir = dir

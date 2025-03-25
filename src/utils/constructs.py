@@ -40,6 +40,9 @@ class Vec2i:
     def __sub__(self, other) -> 'Vec2i':
         return Vec2i(self.x - other.x, self.z - other.z)
 
+    def manhattan_from_origin(self) -> int:
+        return abs(self.x) + abs(self.z)
+
 
 # Mutable Vec2i
 class MVec2i(Vec2i):
