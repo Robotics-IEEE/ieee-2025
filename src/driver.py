@@ -7,6 +7,35 @@ from utils.constructs import *
 
 #TODO: change "point" to a real data type: UPDATE - use the twist message type.
 #TODO: make the publishers publish a legitimate output
+    
+intake = Motor(id=0, drivetrain=False)
+outtake = Motor(id=1, drivetrain=False)
+indexer = Motor(id=2, drivetrain=False)
+front_left = Motor(id=3, drivetrain=True)
+front_right = Motor(id=4, drivetrain=True)
+back_left =  Motor(id=5, drivetrain=True)
+back_right = Motor(id=6, drivetrain=True)
+
+ANGULAR_DISTANCE = 1
+
+# TODO: Tune this constant (movement)
+MOVEMENT_CONSTANT = 50
+current_pos = Vec2f(0, 0)
+angle = 0
+
+magnet_tag = None
+tags = [False, False, False, False]
+tag_positions = []
+score = 0
+
+geodynium_in = 0
+nebulite_in = 0
+
+in_cave = False
+
+placed_beacon = False
+
+led_waiting = False  # Waiting for LED?
 
 class Driver:
     def __init__(self):
@@ -72,7 +101,7 @@ def drive_reverse_time(self, speed, time=None):
     back_right.move_reverse(speed, time)
 
 def drive_forward_position(self, speed, distance=0):
-    time = distance * movement_constant
+    time = distance * MOVEMENT_CONSTANT
     
     front_left.move_forward(speed, time)
     front_right.move_forward(speed, time)
@@ -80,41 +109,12 @@ def drive_forward_position(self, speed, distance=0):
     back_right.move_forward(speed, time)
 
 def drive_reverse_position(self, speed, distance=0):
-    time = distance * movement_constant
+    time = distance * MOVEMENT_CONSTANT
 
     front_left.move_reverse(speed, time)
     front_right.move_reverse(speed, time)
     back_left.move_reverse(speed, time)
     back_right.move_reverse(speed, time)
-    
-intake = Motor(id=0, drivetrain=False)
-outtake = Motor(id=1, drivetrain=False)
-indexer = Motor(id=2, drivetrain=False)
-front_left = Motor(id=3, drivetrain=True)
-front_right = Motor(id=4, drivetrain=True)
-back_left =  Motor(id=5, drivetrain=True)
-back_right = Motor(id=6, drivetrain=True)
-
-ANGULAR_DISTANCE = 1
-
-# TODO: Tune this constant (movement)
-movement_constant = 50
-current_pos = Vec2f(0, 0)
-angle = 0
-
-magnet_tag = None
-tags = [False, False, False, False]
-tag_positions = []
-score = 0
-
-geodynium_in = 0
-nebulite_in = 0
-
-in_cave = False
-
-placed_beacon = False
-
-led_waiting = False  # Waiting for LED?
 
 # Policy:
 # - Wait for LED to fire
