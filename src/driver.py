@@ -53,7 +53,40 @@ class Driver:
         rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
 
+def tick_odo(angle: float) -> Vec2f:
+    nx = math.cos(angle) * ANGULAR_DISTANCE
+    nz = math.sin(angle) * ANGULAR_DISTANCE
 
+    return Vec2f(nx, nz)
+
+def drive_forward_time(self, speed, time=None):
+    front_left.move_forward(speed, time)
+    front_right.move_forward(speed, time)
+    back_left.move_forward(speed, time)
+    back_right.move_forward(speed, time)
+
+def drive_reverse_time(self, speed, time=None):
+    front_left.move_reverse(speed, time)
+    front_right.move_reverse(speed, time)
+    back_left.move_reverse(speed, time)
+    back_right.move_reverse(speed, time)
+
+def drive_forward_position(self, speed, distance=0):
+    time = distance * movement_constant
+    
+    front_left.move_forward(speed, time)
+    front_right.move_forward(speed, time)
+    back_left.move_forward(speed, time)
+    back_right.move_forward(speed, time)
+
+def drive_reverse_position(self, speed, distance=0):
+    time = distance * movement_constant
+
+    front_left.move_reverse(speed, time)
+    front_right.move_reverse(speed, time)
+    back_left.move_reverse(speed, time)
+    back_right.move_reverse(speed, time)
+    
 intake = Motor(id=0, drivetrain=False)
 outtake = Motor(id=1, drivetrain=False)
 indexer = Motor(id=2, drivetrain=False)
@@ -62,6 +95,10 @@ front_right = Motor(id=4, drivetrain=True)
 back_left =  Motor(id=5, drivetrain=True)
 back_right = Motor(id=6, drivetrain=True)
 
+ANGULAR_DISTANCE = 1
+
+# TODO: Tune this constant (movement)
+movement_constant = 50
 current_pos = Vec2f(0, 0)
 angle = 0
 
@@ -90,11 +127,3 @@ if __name__ == "__main__":
         # TODO: call the publish functions
     except rospy.ROSInterruptException:
         pass
-
-ANGULAR_DISTANCE = 1
-
-def tick_odo(angle: float) -> Vec2f:
-    nx = math.cos(angle) * ANGULAR_DISTANCE
-    nz = math.sin(angle) * ANGULAR_DISTANCE
-
-    return Vec2f(nx, nz)
