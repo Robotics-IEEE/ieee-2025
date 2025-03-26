@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import rospy
 from geometry_msgs.msg import Twist
+from utils.motor import Motor
+from utils.constructs import Vec2f
 from utils.constructs import *
 
 #TODO: change "point" to a real data type: UPDATE - use the twist message type.
@@ -12,7 +14,7 @@ class Driver:
         self.rate = rospy.Rate(10)
 
     def goal_position_publish(self):
-        goal_pos_publish  = rospy.Publisher('goal_position_publish', "point", queue_size=10)
+        goal_pos_publish  = rospy.Publisher('goal_position_publish', Point, queue_size=10)
         while not rospy.is_shutdown():
             goal_pos_publish.publish("Output here")
             self.rate.sleep()
@@ -50,6 +52,15 @@ class Driver:
     def vision_status_subscribe():
         rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
+
+
+intake = Motor(id=0, drivetrain=False)
+outtake = Motor(id=1, drivetrain=False)
+indexer = Motor(id=2, drivetrain=False)
+front_left = Motor(id=3, drivetrain=True)
+front_right = Motor(id=4, drivetrain=True)
+back_left =  Motor(id=5, drivetrain=True)
+back_right = Motor(id=6, drivetrain=True)
 
 current_pos = Vec2f(0, 0)
 angle = 0
