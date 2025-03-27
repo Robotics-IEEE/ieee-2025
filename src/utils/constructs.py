@@ -25,7 +25,7 @@ class Vec2i:
 
         return math.sqrt((dx * dx) + (dz * dz))
 
-    def __eq__(self, obj) -> bool:
+    def __eq__(self, obj: 'Vec2i') -> bool:
         return self.x == obj.x and self.z == obj.z
 
     def __hash__(self) -> int:
@@ -111,6 +111,22 @@ class Vec2f:
 
     def z(self) -> float:
         return self.z
+
+class DriveInstruction:
+    def __init__(self, forwards: float, angle: float):
+        self.forwards = forwards
+        self.angle = angle
+
+        if forwards is not 0 and angle is not 0:
+            print("Only one of forwards and angle should exist in an instruction!")
+
+    def get_angle(self):
+        return self.angle
+
+    def get_forwards(self):
+        # TODO: change this constant!!!
+        TIME_TO_GO_FOWARDS_AN_INCH = 0.2
+        return self.forwards * TIME_TO_GO_FOWARDS_AN_INCH
 
 class ContainingPrioQueue(PriorityQueue):
     def _init(self, maxsize):

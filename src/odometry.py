@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from utils.constructs import *
+import math
 import rospy
 from geometry_msgs.msg import Twist
 
@@ -17,12 +19,24 @@ class Odometry():
             self.rate = rospy.Rate(10)
 
         except Exception as e:
-            raise
+            raise e
 
     def odometry_publish(self):
         shifter_publish = rospy.Publisher("odometry_publish", Twist, queue_size=10)
 
+        angle = 0
+
+        # easily changable constant
+        ANGULAR_DISTANCE = 1
+
         while not rospy.is_shutdown():
+            # read odometry delta
+            delta = 1
+            nx = math.cos(angle) * ANGULAR_DISTANCE * delta
+            nz = math.sin(angle) * ANGULAR_DISTANCE * delta
+
+            shifter_publish.publish(Vec2f(nx, nz))
+
             self.rate.sleep()
 
 # Execute odometry

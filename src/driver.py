@@ -2,15 +2,12 @@
 import rospy
 from geometry_msgs.msg import Twist
 from utils.motor import Motor
-from utils.constructs import Vec2f
 from utils.constructs import *
 
 #TODO: change "point" to a real data type: UPDATE - use the twist message type.
 #TODO: make the publishers publish a legitimate output
     
-intake = Motor(id=0, drivetrain=False)
-outtake = Motor(id=1, drivetrain=False)
-indexer = Motor(id=2, drivetrain=False)
+
 front_left = Motor(id=3, drivetrain=True)
 front_right = Motor(id=4, drivetrain=True)
 back_left =  Motor(id=5, drivetrain=True)
@@ -20,7 +17,8 @@ ANGULAR_DISTANCE = 1
 
 # TODO: Tune this constant (movement)
 MOVEMENT_CONSTANT = 50
-current_pos = Vec2f(0, 0)
+# We start at ~12 z
+current_pos = Vec2f(0, 12)
 angle = 0
 
 magnet_tag = None
@@ -66,55 +64,62 @@ class Driver:
             shifter_publish.publish("Output here")
             self.rate.sleep()
 
-    def goal_status_subscribe():
+    def goal_status_subscribe(self):
         rospy.Subscriber("goal_status_publish", "callback?")
         rospy.spin()
 
-    def magnet_subscribe():
+    def magnet_subscribe(self):
         rospy.Subscriber("magnet_publish", "callback?")
         rospy.spin()
 
-    def shifter_status_subscribe():
+    def shifter_status_subscribe(self):
         rospy.Subscriber("shifter_status_publish", "callback?")
         rospy.spin()
 
-    def vision_status_subscribe():
+    def vision_status_subscribe(self):
         rospy.Subscriber("vision_vitals_publish", "callback?")
         rospy.spin()
 
-def tick_odo(angle: float) -> Vec2f:
-    nx = math.cos(angle) * ANGULAR_DISTANCE
-    nz = math.sin(angle) * ANGULAR_DISTANCE
+    def drive_forward_time(self, speed, time=None):
+        front_left.move_forward(speed, time)
+        front_right.move_forward(speed, time)
+        back_left.move_forward(speed, time)
+        back_right.move_forward(speed, time)
 
-    return Vec2f(nx, nz)
+    def drive_reverse_time(self, speed, time=None):
+        front_left.move_reverse(speed, time)
+        front_right.move_reverse(speed, time)
+        back_left.move_reverse(speed, time)
+        back_right.move_reverse(speed, time)
 
-def drive_forward_time(self, speed, time=None):
-    front_left.move_forward(speed, time)
-    front_right.move_forward(speed, time)
-    back_left.move_forward(speed, time)
-    back_right.move_forward(speed, time)
+    def drive_forward_position(self, speed, distance=0):
+        time = distance * MOVEMENT_CONSTANT
 
-def drive_reverse_time(self, speed, time=None):
-    front_left.move_reverse(speed, time)
-    front_right.move_reverse(speed, time)
-    back_left.move_reverse(speed, time)
-    back_right.move_reverse(speed, time)
+        front_left.move_forward(speed, time)
+        front_right.move_forward(speed, time)
+        back_left.move_forward(speed, time)
+        back_right.move_forward(speed, time)
 
-def drive_forward_position(self, speed, distance=0):
-    time = distance * MOVEMENT_CONSTANT
-    
-    front_left.move_forward(speed, time)
-    front_right.move_forward(speed, time)
-    back_left.move_forward(speed, time)
-    back_right.move_forward(speed, time)
+    def drive_reverse_position(self, speed, distance=0):
+        time = distance * MOVEMENT_CONSTANT
 
-def drive_reverse_position(self, speed, distance=0):
-    time = distance * MOVEMENT_CONSTANT
+        front_left.move_reverse(speed, time)
+        front_right.move_reverse(speed, time)
+        back_left.move_reverse(speed, time)
+        back_right.move_reverse(speed, time)
 
-    front_left.move_reverse(speed, time)
-    front_right.move_reverse(speed, time)
-    back_left.move_reverse(speed, time)
-    back_right.move_reverse(speed, time)
+    def drive_clockwise_time(self, speed, time=None):
+        front_left.move_forward(speed, time)
+        front_right.move_reverse(speed, time)
+        back_left.move_forward(speed, time)
+        back_right.move_reverse(speed, time)
+
+    def drive_from_instruction(self, insn: DriveInstruction):
+        if insn.get_forwards() == 0:
+            # run angle
+            self.drive_forward_time(1, insn.get_forwards())
+        else:
+            self.drive_clockwise_time(1, insn.get_angle())
 
 # Policy:
 # - Wait for LED to fire

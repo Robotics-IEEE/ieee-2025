@@ -6,10 +6,10 @@ EAST = Vec2i(0, 1)
 SOUTH = Vec2i(-1, 0)
 WEST = Vec2i(0, -1)
 
-NORTHEAST = Vec2i(1, 0)
-NORTHWEST = Vec2i(0, 1)
-SOUTHEAST = Vec2i(-1, 0)
-SOUTHWEST = Vec2i(0, -1)
+NORTHEAST = Vec2i(1, 1)
+NORTHWEST = Vec2i(1, -1)
+SOUTHEAST = Vec2i(-1, 1)
+SOUTHWEST = Vec2i(-1, -1)
 
 def invert_dir(dir: Vec2i):
     if dir.manhattan_from_origin() is not 1:
@@ -33,6 +33,9 @@ def invert_dir(dir: Vec2i):
         return NORTHEAST
     raise Exception("Reality is broken?")
 
+def angle_between(a: Vec2i, b: Vec2i) -> float:
+    return math.atan2(b.z - a.z, b.x - a.x)
+
 class DirAmtPair:
     def __init__(self, dir: Vec2i, amt: int):
         self.dir = dir
@@ -47,7 +50,7 @@ def pathlist_from_nodelist(root: Vec2Node) -> list:
     while nd is not None:
         if nd.parent is not None:
             ndir = nd.loc - nd.parent.loc
-            if last_dir == ndir:
+            if last_dir is not None and last_dir == ndir:
                 last_amt = last_amt + 1
             else:
                 if last_dir is not None:
