@@ -1,19 +1,32 @@
 #!/usr/bin/env python3
 import rospy
+from std_msgs.msg import Bool
+from utils.motor import Motor
 
 class VelocityToOuttake():
 
-    def __init__():
+    def __init__(self):
         rospy.init_node("velocity_to_outtake", anonymous=False)
+        # TODO: fix this id
+        self.outtake_motor = Motor(id=4, drivetrain=False) 
 
-    def outtake_control_subscribe():
-        rospy.Subscriber("outtake_control_publish", "callback?")
-        rospy.spin()
+        # TODO: fix the speed
+        self.speed = 1000
+        rospy.Subscriber("outtake_control", Bool, self.outtake_callback)
 
-# Execute velocity to outtake
+    def outtake_callback(self, msg):
+        if msg.data:
+            # Turn on the outtake
+            self.outtake_motor.move_forward(speed=self.speed)
+        else:
+            self.outtake_motor.stop()
+
+
+# Execute velocity to intake
 if __name__ == "__main__":
     try:
-        velocity_to_outtake = VelocityToOuttake()
-        # Run the publishers and subscribers here
+        velocity_to_intake = VelocityToOuttake()
+        rospy.spin()
+
     except rospy.ROSInterruptException:
         pass
