@@ -49,7 +49,7 @@ class Motor:
         print(f"Motor {id} ready.")
 
 
-    def move_forward(self, speed, time=None): 
+    def move_forward(self, speed, drive_time=None):
         self.speed = speed
         self.instrument.write_register(0x0066, 1, functioncode=6)  # Start forward rotation
         
@@ -57,12 +57,16 @@ class Motor:
             self.instrument.write_register(0x00D6, DRIVETRAIN_TORQUE_CODE, functioncode=6)
         else:
             self.instrument.write_register(0x00D6, INTAKE_TORQUE_CODE, functioncode=6)
-        if time is not None:
-            time.sleep(time)
 
         self.instrument.write_register(0x0056, speed, functioncode=6)
 
-    def move_reverse(self, speed, time=None): 
+        if drive_time is not None:
+            time.sleep(drive_time)
+
+        # Reset speed
+        self.instrument.write_register(0x0056, 0, functioncode=6)
+
+    def move_reverse(self, speed, drive_time=None):
         self.speed = speed
         self.instrument.write_register(0x0066, 2, functioncode=6)  # Start reverse rotation
         
@@ -70,7 +74,11 @@ class Motor:
             self.instrument.write_register(0x00D6, DRIVETRAIN_TORQUE_CODE, functioncode=6)
         else:
             self.instrument.write_register(0x00D6, INTAKE_TORQUE_CODE, functioncode=6)
-        if time is not None:
-            time.sleep(time)
-    
+
         self.instrument.write_register(0x0056, speed, functioncode=6)
+
+        if drive_time is not None:
+            time.sleep(drive_time)
+
+        # Reset speed
+        self.instrument.write_register(0x0056, 0, functioncode=6)

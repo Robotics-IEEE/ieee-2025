@@ -22,8 +22,8 @@ class SimulatedLevel:
     """ Constructor """
     def __init__(self):
         # TODO: one unit should be 1 inch, get size of board
-        self.x_size = 32
-        self.z_size = 32
+        self.x_size = 48
+        self.z_size = 96
 
         # calloc
         self.field = np.zeros((self.x_size, self.z_size), float)
