@@ -77,8 +77,11 @@ class Motor:
 
         self.instrument.write_register(0x0056, speed, functioncode=6)
 
+        # Reset speed
         if drive_time is not None:
             time.sleep(drive_time)
+            self.instrument.write_register(0x0056, 0, functioncode=6)
+        
 
-        # Reset speed
+    def stop(self):
         self.instrument.write_register(0x0056, 0, functioncode=6)
