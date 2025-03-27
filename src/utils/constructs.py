@@ -112,6 +112,9 @@ class Vec2f:
     def z(self) -> float:
         return self.z
 
+    def floor(self) -> Vec2i:
+        return Vec2i(int(self.x), int(self.z))
+
 class DriveInstruction:
     def __init__(self, forwards: float, angle: float):
         self.forwards = forwards

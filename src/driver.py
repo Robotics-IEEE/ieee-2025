@@ -3,6 +3,8 @@ import rospy
 from geometry_msgs.msg import Twist
 from utils.motor import Motor
 from utils.constructs import *
+from utils.level import *
+from utils.pathfind import *
 
 #TODO: change "point" to a real data type: UPDATE - use the twist message type.
 #TODO: make the publishers publish a legitimate output
@@ -128,7 +130,38 @@ class Driver:
 # Execute driver
 if __name__ == "__main__":
     try:
+        level = SimulatedLevel()
+
         driver = Driver()
+
+        # TODO: Get vision
+        vision = None
+
+        # place beacon
+        target = vision.get_target_pos()
+        level.pathfind(current_pos.floor(), target)
+        # place_beacon()
+
+        box_target = vision.find_box_pos()
+        i = 0
+        attempts = 0
+        while i < 10:
+            closest_ground = vision.find_closest_object()
+            if closest_ground is None:
+                # rotate 90
+                driver.drive_clockwise_time(1, 1)
+                i = i - 1
+                attempts = attempts + 1
+                if attempts is 6:
+                    break
+            # collect objects
+            level.pathfind(current_pos.floor(), closest_ground)
+
+        # go back to box pos
+        level.pathfind(current_pos.floor(), box_target)
+
+        # drop_arm()
+
         # TODO: call the publish functions
     except rospy.ROSInterruptException:
         pass

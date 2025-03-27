@@ -84,6 +84,7 @@ class SimulatedLevel:
             for j in range(z, z + z_size):
                 if (self.in_range(i, j)):
                     self.field[x, z] = 1
+
     def debug(self):
         for x in range(0, self.x_size):
             for z in range(0, self.z_size):

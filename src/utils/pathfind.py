@@ -60,6 +60,11 @@ def pathlist_from_nodelist(root: Vec2Node) -> list:
                 last_amt = 1
 
         nd = nd.parent
+
+    # build command list
+    # for i in range(0, len(dirs)):
+
+
     return dirs
 
 o = SimulatedLevel()
