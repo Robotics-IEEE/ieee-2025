@@ -44,6 +44,7 @@ if __name__ == "__main__":
     try:
         proximity = Proximity()
         proximity.proximity_publish()
+        rospy.spin()
     except rospy.ROSInterruptException:
         pass
     finally:

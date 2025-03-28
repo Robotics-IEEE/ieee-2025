@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import rospy
+import threading
 from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import Bool
 
@@ -53,25 +54,17 @@ class Driver:
         rospy.Subscriber("shifter_status", Bool, self.shifter_status_callback)
         rospy.Subscriber("vision_vitals", Bool, self.vision_status_callback)
 
-    def goal_position_publish(self):
-        while not rospy.is_shutdown():
-            self.goal_pos_publish.publish(Point(0.0, 0.0, 0.0))
-            self.rate.sleep()
+    def goal_position(self, msg: Point):
+        self.goal_pos_pub.publish(msg)
 
-    def intake_control_publish(self):
-        while not rospy.is_shutdown():
-            self.intake_control_publish.publish(Bool(True))
-            self.rate.sleep()
+    def intake_control(self, msg: Bool):
+        self.intake_control_pub.publish(msg)
 
-    def outtake_control_publish(self):
-        while not rospy.is_shutdown():
-            self.outtake_control_publish.publish(Bool(False))
-            self.rate.sleep()
+    def outtake_control(self, msg: Bool):
+        self.outtake_control_pub.publish(msg)
 
-    def shifter_control_publish(self):
-        while not rospy.is_shutdown():
-            self.shifter_publish.publish(Bool(True))  # Example output
-            self.rate.sleep()
+    def shifter_control(self, msg: Bool):
+        self.shifter_publish_pub.publish(msg)
 
     def goal_status_callback(self, msg):
         rospy.loginfo(f"Goal Status Received: {msg.data}")
@@ -84,9 +77,6 @@ class Driver:
 
     def vision_status_callback(self, msg):
         rospy.loginfo(f"Vision Status Received: {msg.data}")
-
-    def run(self):
-        rospy.spin()
     
     def drive_forward_time(self, speed, time=None):
         front_left.move_forward(speed, time)
@@ -129,6 +119,14 @@ class Driver:
         else:
             self.drive_clockwise_time(1, insn.get_angle())
 
+    def run(self):
+        threading.Thread(target=self.goal_position_publish, daemon=True).start()
+        threading.Thread(target=self.intake_control_publish, daemon=True).start()
+        threading.Thread(target=self.outtake_control_publish, daemon=True).start()
+        threading.Thread(target=self.shifter_control_publish, daemon=True).start()
+
+        rospy.spin()
+
 # Policy:
 # - Wait for LED to fire
 # - First place beacon
@@ -139,11 +137,7 @@ if __name__ == "__main__":
         level = SimulatedLevel()
 
         driver = Driver()
-        driver.run()
-        driver.goal_pos_publish()
-        driver.intake_control_publish()
-        driver.outtake_control_publish()
-        driver.shifter_control_publish()
+        
 
         # TODO: Get vision
         vision = None

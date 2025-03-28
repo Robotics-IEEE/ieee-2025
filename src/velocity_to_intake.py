@@ -26,7 +26,7 @@ class VelocityToIntake():
 if __name__ == "__main__":
     try:
         velocity_to_intake = VelocityToIntake()
-        rospy.spin()
+        velocity_to_intake.intake_callback()
 
     except rospy.ROSInterruptException:
         pass
