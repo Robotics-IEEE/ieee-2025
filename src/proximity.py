@@ -19,7 +19,7 @@ class Proximity:
             self.rate = rospy.Rate(10)  # Hz
         except Exception as e:
             rospy.logerr(f"Failed to initialize sensor: {e}")
-            raise
+            pass
 
     def proximity_publish(self):   
         # Publish to the proximity topic
@@ -34,7 +34,7 @@ class Proximity:
                 prox_pub.publish(Bool(data=proximity_detected))
             except Exception as e:
                 rospy.logerr(f"Error reading sensor data: {e}")
-                raise
+                pass
 
             # Sleep for rate of 10Hz
             self.rate.sleep()

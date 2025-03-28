@@ -10,7 +10,7 @@ class Shifter():
             self.rate = rospy.Rate(10) # Hz
         except Exception as e:
             rospy.logerr(f"Failed to initialize shifter: {e}")
-            raise
+            pass
 
     def shifter_status_publish(self):
         shifter_publish = rospy.Publisher("shifter_status", Status, queue_size=10)

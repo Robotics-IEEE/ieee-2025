@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Point
+from std_msgs.msg import Bool
+
 from utils.motor import Motor
 from utils.constructs import *
 from utils.level import *
@@ -9,7 +11,6 @@ from utils.pathfind import *
 #TODO: change "point" to a real data type: UPDATE - use the twist message type.
 #TODO: make the publishers publish a legitimate output
     
-
 front_left = Motor(id=3, drivetrain=True)
 front_right = Motor(id=4, drivetrain=True)
 back_left =  Motor(id=5, drivetrain=True)
@@ -42,46 +43,51 @@ class Driver:
         rospy.init_node('driver', anonymous=False)
         self.rate = rospy.Rate(10)
 
+        self.goal_pos_publish = rospy.Publisher('goal_position', Point, queue_size=10)
+        self.intake_control_publish = rospy.Publisher('intake_control', Bool, queue_size=10)
+        self.outtake_control_publish = rospy.Publisher('outtake_control', Bool, queue_size=10)
+        self.shifter_publish = rospy.Publisher('shifter_control', Bool, queue_size=10)
+
+        rospy.Subscriber("goal_status", Bool, self.goal_status_callback)
+        rospy.Subscriber("magnet", Bool, self.magnet_callback)
+        rospy.Subscriber("shifter_status", Bool, self.shifter_status_callback)
+        rospy.Subscriber("vision_vitals", Bool, self.vision_status_callback)
+
     def goal_position_publish(self):
-        goal_pos_publish  = rospy.Publisher('goal_position_publish', Point, queue_size=10)
         while not rospy.is_shutdown():
-            goal_pos_publish.publish("Output here")
+            self.goal_pos_publish.publish(Point(0.0, 0.0, 0.0))
             self.rate.sleep()
 
     def intake_control_publish(self):
-        intake_control_publish  = rospy.Publisher('intake_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
-            intake_control_publish.publish("Output here")
+            self.intake_control_publish.publish(Bool(True))
             self.rate.sleep()
 
     def outtake_control_publish(self):
-        outtake_control_publish  = rospy.Publisher('outtake_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
-            outtake_control_publish.publish("Output here")
+            self.outtake_control_publish.publish(Bool(False))
             self.rate.sleep()
 
     def shifter_control_publish(self):
-        shifter_publish  = rospy.Publisher('shifter_control_publish', "bool", queue_size=10)
         while not rospy.is_shutdown():
-            shifter_publish.publish("Output here")
+            self.shifter_publish.publish(Bool(True))  # Example output
             self.rate.sleep()
 
-    def goal_status_subscribe(self):
-        rospy.Subscriber("goal_status_publish", "callback?")
-        rospy.spin()
+    def goal_status_callback(self, msg):
+        rospy.loginfo(f"Goal Status Received: {msg.data}")
 
-    def magnet_subscribe(self):
-        rospy.Subscriber("magnet_publish", "callback?")
-        rospy.spin()
+    def magnet_callback(self, msg):
+        rospy.loginfo(f"Magnet Status Received: {msg.data}")
 
-    def shifter_status_subscribe(self):
-        rospy.Subscriber("shifter_status_publish", "callback?")
-        rospy.spin()
+    def shifter_status_callback(self, msg):
+        rospy.loginfo(f"Shifter Status Received: {msg.data}")
 
-    def vision_status_subscribe(self):
-        rospy.Subscriber("vision_vitals_publish", "callback?")
-        rospy.spin()
+    def vision_status_callback(self, msg):
+        rospy.loginfo(f"Vision Status Received: {msg.data}")
 
+    def run(self):
+        rospy.spin()
+    
     def drive_forward_time(self, speed, time=None):
         front_left.move_forward(speed, time)
         front_right.move_forward(speed, time)
@@ -133,6 +139,11 @@ if __name__ == "__main__":
         level = SimulatedLevel()
 
         driver = Driver()
+        driver.run()
+        driver.goal_pos_publish()
+        driver.intake_control_publish()
+        driver.outtake_control_publish()
+        driver.shifter_control_publish()
 
         # TODO: Get vision
         vision = None

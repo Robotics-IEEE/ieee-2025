@@ -19,7 +19,7 @@ class Odometry():
             self.rate = rospy.Rate(10)
 
         except Exception as e:
-            raise e
+            pass
 
     def odometry_publish(self):
         shifter_publish = rospy.Publisher("odometry_publish", Twist, queue_size=10)

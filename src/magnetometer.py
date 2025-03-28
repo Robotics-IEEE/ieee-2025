@@ -24,7 +24,7 @@ class Magnetometer():
 
         except Exception as e:
             # rospy.logerr(f"Failed to initialize sensor: {e}")
-            raise
+            pass
 
     def magnet_publish(self):   
         # Publish to the magnet topic
@@ -40,7 +40,7 @@ class Magnetometer():
                 mag_pub.publish(Bool(data=mag_found))
             except Exception as e:
                 # rospy.logerr(f"Error reading sensor data: {e}")
-                raise
+                pass
 
             # Sleep for rate of 10Hz
             self.rate.sleep()
