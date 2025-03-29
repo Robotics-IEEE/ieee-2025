@@ -40,9 +40,10 @@ placed_beacon = False
 led_waiting = False  # Waiting for LED?
 
 class Driver:
-    def __init__(self):
-        rospy.init_node('driver', anonymous=False)
-        self.rate = rospy.Rate(10)
+    def __init__(self, init: bool):
+        if init:
+            rospy.init_node('driver', anonymous=False)
+            self.rate = rospy.Rate(10)
 
         self.goal_pos_publish = rospy.Publisher('goal_position', Point, queue_size=10)
         self.intake_control_publish = rospy.Publisher('intake_control', Bool, queue_size=10)
@@ -137,7 +138,8 @@ if __name__ == "__main__":
         level = SimulatedLevel()
 
         driver = Driver()
-        
+
+        driver = Driver(True)
 
         # TODO: Get vision
         vision = None
