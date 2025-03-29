@@ -137,8 +137,6 @@ if __name__ == "__main__":
     try:
         level = SimulatedLevel()
 
-        driver = Driver()
-
         driver = Driver(True)
 
         # TODO: Get vision
